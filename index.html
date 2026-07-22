@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zachary Vessey, Cybersecurity</title>
+<meta name="description" content="Portfolio for a SOC/GRC-track security professional: real experience, open-source triage work, and hands-on labs.">
+<style>
+  :root {
+    --bg: #f0f2f3;
+    --bg-elevated: #ffffff;
+    --ink: #121a22;
+    --ink-muted: #55626c;
+    --ink-faint: #7c8890;
+    --accent: #256478;
+    --accent-strong: #163f4c;
+    --accent-wash: rgba(37, 100, 120, 0.08);
+    --rule: #d6dbdd;
+    --rule-strong: #b9c0c3;
+    --amber: #a06a1e;
+    --amber-wash: rgba(160, 106, 30, 0.1);
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", "Fira Code", Consolas, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --shadow: 0 1px 2px rgba(18, 26, 34, 0.04), 0 8px 24px -12px rgba(18, 26, 34, 0.12);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0f13;
+      --bg-elevated: #121820;
+      --ink: #e8ecee;
+      --ink-muted: #9aa6ac;
+      --ink-faint: #6d787e;
+      --accent: #62b6cc;
+      --accent-strong: #8dcfe0;
+      --accent-wash: rgba(98, 182, 204, 0.1);
+      --rule: #232c33;
+      --rule-strong: #313c44;
+      --amber: #d9a24e;
+      --amber-wash: rgba(217, 162, 78, 0.12);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    }
+  }
+  html[data-theme="dark"] {
+    --bg: #0b0f13;
+    --bg-elevated: #121820;
+    --ink: #e8ecee;
+    --ink-muted: #9aa6ac;
+    --ink-faint: #6d787e;
+    --accent: #62b6cc;
+    --accent-strong: #8dcfe0;
+    --accent-wash: rgba(98, 182, 204, 0.1);
+    --rule: #232c33;
+    --rule-strong: #313c44;
+    --amber: #d9a24e;
+    --amber-wash: rgba(217, 162, 78, 0.12);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  }
+  html[data-theme="light"] {
+    --bg: #f0f2f3;
+    --bg-elevated: #ffffff;
+    --ink: #121a22;
+    --ink-muted: #55626c;
+    --ink-faint: #7c8890;
+    --accent: #256478;
+    --accent-strong: #163f4c;
+    --accent-wash: rgba(37, 100, 120, 0.08);
+    --rule: #d6dbdd;
+    --rule-strong: #b9c0c3;
+    --amber: #a06a1e;
+    --amber-wash: rgba(160, 106, 30, 0.1);
+    --shadow: 0 1px 2px rgba(18, 26, 34, 0.04), 0 8px 24px -12px rgba(18, 26, 34, 0.12);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration-color: var(--rule-strong); text-underline-offset: 3px; }
+  a:hover { color: var(--accent-strong); text-decoration-color: var(--accent-strong); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: 840px; margin: 0 auto; padding: 0 28px; }
+  .wrap-wide { max-width: 920px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- masthead ---------- */
+  header.masthead {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0;
+  }
+  .brand {
+    font-family: var(--mono); font-size: 14px; font-weight: 600;
+    letter-spacing: 0.02em; color: var(--ink);
+  }
+  .brand-dot { color: var(--accent); }
+  .masthead-right { display: flex; align-items: center; gap: 24px; }
+  nav.masthead-nav { display: flex; gap: 24px; font-family: var(--mono); font-size: 13px; }
+  nav.masthead-nav a {
+    color: var(--ink-muted); text-decoration: none;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  nav.masthead-nav a:hover { color: var(--accent); }
+  #theme-toggle {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em;
+    background: none; border: 1px solid var(--rule-strong); color: var(--ink-muted);
+    border-radius: 3px; padding: 5px 9px; cursor: pointer;
+  }
+  #theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 72px 0 56px; animation: rise 0.5s ease-out; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .hero { animation: none; } }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 14px;
+  }
+  h1.name {
+    font-family: var(--mono); font-weight: 700; letter-spacing: -0.01em;
+    font-size: clamp(32px, 5vw, 46px); line-height: 1.1; margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  p.tagline {
+    font-family: var(--serif); font-style: italic; color: var(--ink-muted);
+    font-size: 20px; margin: 0 0 22px; text-wrap: balance;
+  }
+  p.bio { max-width: 62ch; color: var(--ink); margin: 0 0 26px; }
+
+  .contact-rail { display: flex; flex-wrap: wrap; gap: 4px 18px; font-family: var(--mono); font-size: 13.5px; }
+  .contact-rail a { text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--rule-strong); padding-bottom: 1px; }
+  .contact-rail a:hover { color: var(--accent); border-color: var(--accent); }
+  .contact-rail span.loc { color: var(--ink-faint); }
+
+  /* ---------- section scaffolding ---------- */
+  section { padding: 52px 0; border-top: 1px solid var(--rule); }
+  section:first-of-type { border-top: none; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 30px; flex-wrap: wrap; }
+  h2.section-title {
+    font-family: var(--mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink); margin: 0; font-weight: 700;
+  }
+  .section-note { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); }
+
+  /* ---------- experience / education ---------- */
+  .entry { display: grid; grid-template-columns: 165px 1fr; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--rule); }
+  .entry:last-child { border-bottom: none; }
+  .entry-when { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); padding-top: 3px; }
+  .entry-role { font-weight: 700; font-size: 17px; margin: 0 0 2px; }
+  .entry-org { color: var(--ink-muted); font-size: 15.5px; margin: 0 0 10px; }
+  .entry ul { margin: 0; padding-left: 18px; color: var(--ink); }
+  .entry li { margin-bottom: 5px; }
+  .entry li::marker { color: var(--accent); }
+
+  @media (max-width: 620px) {
+    .entry { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  .cert-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .cert-chip {
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.02em;
+    border: 1px solid var(--rule-strong); border-radius: 3px; padding: 6px 11px;
+    color: var(--ink); background: var(--bg-elevated);
+  }
+
+  /* ---------- OSS triage log ---------- */
+  .log-intro { max-width: 66ch; color: var(--ink-muted); margin: -10px 0 28px; }
+  .log-stats {
+    display: flex; gap: 28px; flex-wrap: wrap; font-family: var(--mono); font-size: 12.5px;
+    color: var(--ink-faint); margin: -6px 0 28px; padding-bottom: 24px; border-bottom: 1px dashed var(--rule-strong);
+  }
+  .log-stats b { color: var(--ink); font-size: 20px; display: block; font-family: var(--serif); font-weight: 700; }
+
+  .log { display: flex; flex-direction: column; }
+  .log-row {
+    display: grid; grid-template-columns: 96px 108px 1fr 150px; gap: 16px; align-items: start;
+    padding: 16px 0; border-bottom: 1px solid var(--rule);
+  }
+  .log-row:last-child { border-bottom: none; }
+  .log-date { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); padding-top: 3px; font-variant-numeric: tabular-nums; }
+  .log-tag {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.03em; height: fit-content;
+    padding: 3px 8px; border-radius: 3px; background: var(--accent-wash); color: var(--accent-strong);
+    justify-self: start;
+  }
+  .log-body a.log-title { font-weight: 700; color: var(--ink); text-decoration: none; }
+  .log-body a.log-title:hover { color: var(--accent); }
+  .log-body a.log-title::after { content: " ↗"; font-size: 12px; color: var(--ink-faint); }
+  .log-desc { margin: 4px 0 0; color: var(--ink-muted); font-size: 15px; }
+  .log-status {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; text-align: right;
+    color: var(--amber); padding-top: 4px; white-space: nowrap;
+  }
+  .log-status::before { content: "●"; margin-right: 5px; font-size: 8px; vertical-align: 1px; }
+
+  @media (max-width: 700px) {
+    .log-row { grid-template-columns: 1fr; gap: 6px; }
+    .log-status { text-align: left; }
+  }
+
+  /* ---------- project cards ---------- */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--bg-elevated); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 22px 24px; box-shadow: var(--shadow);
+  }
+  .card h3 { font-family: var(--mono); font-size: 15px; margin: 0 0 4px; font-weight: 700; }
+  .card h3 a { color: var(--ink); text-decoration: none; }
+  .card h3 a:hover { color: var(--accent); }
+  .card .card-meta { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .card p { margin: 0; color: var(--ink-muted); font-size: 15px; }
+  .card p + p { margin-top: 8px; }
+
+  /* ---------- skills ---------- */
+  .skill-group { margin-bottom: 22px; }
+  .skill-group:last-child { margin-bottom: 0; }
+  .skill-label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 10px; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    font-size: 14px; padding: 5px 12px; border-radius: 999px;
+    border: 1px solid var(--rule-strong); color: var(--ink);
+  }
+
+  /* ---------- footer ---------- */
+  footer { padding: 44px 0 60px; }
+  .footer-row { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
+  .footer-note { font-size: 14px; color: var(--ink-faint); max-width: 46ch; }
+  .footer-links { display: flex; gap: 18px; font-family: var(--mono); font-size: 13px; }
+  .footer-links a { text-decoration: none; color: var(--ink-muted); }
+  .footer-links a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap-wide masthead-row">
+    <span class="brand">zvessey<span class="brand-dot">.</span>sec</span>
+    <div class="masthead-right">
+      <nav class="masthead-nav">
+        <a href="#experience">Experience</a>
+        <a href="#triage">OSS Triage</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button id="theme-toggle" type="button" aria-label="Toggle color theme">Theme</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <p class="eyebrow">SOC / GRC track</p>
+    <h1 class="name">Zachary Vessey</h1>
+    <p class="tagline">Security operations &amp; risk, learned by doing the work, not just studying it.</p>
+    <p class="bio">
+      I'm working toward a career in security operations and GRC, finishing an M.S. in Cyber Risk
+      Management at Georgetown right now. Most of what's below isn't a class project: it's SIEM labs,
+      packet captures, and real GitHub issues on tools like Wazuh and Velociraptor that I sat with
+      until I actually understood what was going wrong.
+    </p>
+    <div class="contact-rail">
+      <a href="mailto:zachvessey16@gmail.com">zachvessey16@gmail.com</a>
+      <a href="https://www.linkedin.com/in/zachary-vessey-834a97223" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/zachvessey16" target="_blank" rel="noopener">GitHub</a>
+      <span class="loc">San Francisco, CA</span>
+    </div>
+  </section>
+
+  <section class="wrap" id="experience">
+    <div class="section-head">
+      <h2 class="section-title">Experience &amp; Education</h2>
+    </div>
+
+    <div class="entry">
+      <div class="entry-when">Sep &ndash; Nov 2024</div>
+      <div>
+        <p class="entry-role">Cybersecurity Content Consultant <span style="color:var(--ink-faint); font-weight:400;">(Subcontractor)</span></p>
+        <p class="entry-org">The Salvation Army</p>
+        <ul>
+          <li>Designed and delivered a security-awareness comic and training materials to 100+ non-technical staff, concept through delivery, solo</li>
+          <li>Translated phishing, social engineering, and credential-misuse concepts into scenarios a non-technical audience would actually retain</li>
+          <li>Structured content with visual aids and interactive elements to support different learning styles</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-when">Exp. May 2027</div>
+      <div>
+        <p class="entry-role">M.S., Cyber Risk Management</p>
+        <p class="entry-org">Georgetown University (fully online)</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-when">May 2024</div>
+      <div>
+        <p class="entry-role">B.S., Criminology <span style="color:var(--ink-faint); font-weight:400;">(minor in Political Science)</span></p>
+        <p class="entry-org">Virginia Tech</p>
+      </div>
+    </div>
+
+    <div class="cert-row">
+      <span class="cert-chip">CompTIA Security+ (SY0-701)</span>
+      <span class="cert-chip">ISC2 Certified in Cybersecurity (CC)</span>
+      <span class="cert-chip">Google Cybersecurity Professional Certificate</span>
+    </div>
+  </section>
+
+  <section class="wrap-wide" id="triage">
+    <div class="section-head">
+      <h2 class="section-title">Open-Source Security Triage</h2>
+      <span class="section-note">Wazuh &amp; Velociraptor, GitHub Discussions</span>
+    </div>
+    <p class="log-intro wrap" style="padding:0; max-width:66ch;">
+      Since mid-July 2026 I've been working unanswered support threads on two real security tools,
+      Wazuh (SIEM) and Velociraptor (DFIR), the same way I'd triage a ticket: read the source, reproduce
+      the reasoning, don't guess. Every entry below links to the live, public discussion.
+    </p>
+    <div class="log-stats">
+      <div><b>8</b>threads engaged</div>
+      <div><b>2</b>projects: Wazuh, Velociraptor</div>
+      <div><b>6/8</b>diagnosed from scratch</div>
+    </div>
+
+    <div class="log">
+      <div class="log-row">
+        <div class="log-date">2026-07-20</div>
+        <span class="log-tag">Wazuh</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/wazuh/wazuh/discussions/34911#discussioncomment-17706820" target="_blank" rel="noopener">Why crashed sub-daemons don't trigger a systemd restart</a>
+          <p class="log-desc">Traced the gap to wazuh-control supervising its own child processes, which hides the crash from systemd entirely. Cross-checked the upcoming single-process agent rewrite and flagged a watchdog gap that persists even there.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-date">2026-07-20</div>
+        <span class="log-tag">Velociraptor</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/Velocidex/velociraptor/discussions/4107#discussioncomment-17695241" target="_blank" rel="noopener">Deploying clients in standby mode</a>
+          <p class="log-desc">No documented feature for this, but found native SCM pause/continue support in the Windows client's Go source that halts the beacon loop without killing the process. Confirmed Windows-only, no Linux/macOS equivalent.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-date">2026-07-20</div>
+        <span class="log-tag">Wazuh</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/wazuh/wazuh/discussions/36860#discussioncomment-17694846" target="_blank" rel="noopener">Running wazuh-dashboard from source in dev mode</a>
+          <p class="log-desc">Root-caused import-path and duplicate-plugin errors to a manual, side-by-side repo setup, and pointed to the supported Docker-based dev workflow, verified against the OP's actual release branch, not just main.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-date">2026-07-19</div>
+        <span class="log-tag">Wazuh</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/wazuh/wazuh/discussions/33590#discussioncomment-17685444" target="_blank" rel="noopener">SCA hash-gating: bug or intentional design?</a>
+          <p class="log-desc">Confirmed the behavior was intentional, traced it to the GitHub issue that introduced it, and explained the two-hash system driving what the OP was seeing.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-date">2026-07-18</div>
+        <span class="log-tag">Velociraptor</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/Velocidex/velociraptor/discussions/3044#discussioncomment-17677638" target="_blank" rel="noopener">Re-running hunts that failed or timed out</a>
+          <p class="log-desc">Surfaced an under-documented official method (GUI and VQL) for re-collecting from clients a hunt missed, and added the VQL snippet.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="projects">
+    <div class="section-head">
+      <h2 class="section-title">Labs &amp; Projects</h2>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-meta">Detection Engineering &middot; SigmaHQ &middot; open PR</div>
+        <h3><a href="https://github.com/SigmaHQ/sigma/pull/6145" target="_blank" rel="noopener">Sigma rules for CISA/NSA/FBI advisory AA26-194A</a></h3>
+        <p>Wrote two Sigma detection rules for the router-config-theft technique in advisory AA26-194A (weak-community-string SNMP abuse and outbound TFTP exfiltration from management subnets), validated for syntax and cross-converted to Splunk and Elastic.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-meta">Guided Lab &middot; Splunk, Elastic Stack</div>
+        <h3>TryHackMe SOC Analyst Track</h3>
+        <p>SIEM fundamentals, log analysis, alert triage, and intro incident response. Practiced identifying IOCs across detection-to-containment scenarios.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-meta">Packet Analysis &middot; Wireshark</div>
+        <h3>Network traffic capture &amp; analysis</h3>
+        <p>Captured live traffic and applied display filters across DNS, HTTP, TCP, and UDP. Identified plaintext credential exposure, port-scanning activity, and misconfigured services leaking internal hostnames, documented as practice incident artifacts.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-meta">Competition</div>
+        <h3>Georgetown CTF</h3>
+        <p>Competed under competition conditions, applying vulnerability analysis, exploit identification, and defensive techniques against the clock.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-meta">Challenge &middot; SQL</div>
+        <h3>SQL Island</h3>
+        <p>Wrote and tuned SQL queries to extract, filter, and manipulate structured data, the same querying muscle used daily to pull evidence out of SIEM-backed datasets.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="skills">
+    <div class="section-head">
+      <h2 class="section-title">Skills</h2>
+    </div>
+    <div class="skill-group">
+      <p class="skill-label">Security &amp; Analysis</p>
+      <div class="pill-row">
+        <span class="pill">SIEM &amp; log analysis</span>
+        <span class="pill">Alert triage</span>
+        <span class="pill">IOC detection</span>
+        <span class="pill">Incident response</span>
+        <span class="pill">Packet capture</span>
+        <span class="pill">Network security</span>
+        <span class="pill">GRC / compliance</span>
+        <span class="pill">Access control</span>
+        <span class="pill">Detection engineering (Sigma)</span>
+        <span class="pill">Security-awareness content</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-label">Tools &amp; Platforms</p>
+      <div class="pill-row">
+        <span class="pill">Splunk</span>
+        <span class="pill">Elastic Stack</span>
+        <span class="pill">Wireshark</span>
+        <span class="pill">Nmap</span>
+        <span class="pill">Python</span>
+        <span class="pill">Bash</span>
+        <span class="pill">SQL</span>
+        <span class="pill">Git / GitHub</span>
+        <span class="pill">Windows</span>
+        <span class="pill">Linux</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap" id="contact">
+    <div class="footer-row">
+      <p class="footer-note">Open to SOC analyst and GRC / risk-compliance roles. Reach out any time.</p>
+      <div class="footer-links">
+        <a href="mailto:zachvessey16@gmail.com">Email</a>
+        <a href="https://www.linkedin.com/in/zachary-vessey-834a97223" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/zachvessey16" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var stored = localStorage.getItem('theme');
+    if (stored) root.setAttribute('data-theme', stored);
+    btn.addEventListener('click', function () {
+      var current = root.getAttribute('data-theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      var next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  })();
+</script>
+
+</body>
+</html>
