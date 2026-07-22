@@ -147,7 +147,7 @@
   .contact-rail span.loc { color: var(--ink-faint); }
 
   /* ---------- section scaffolding ---------- */
-  section { padding: 52px 0; border-top: 1px solid var(--rule); }
+  section { padding: 52px 0; border-top: 1px solid var(--rule); scroll-margin-top: 84px; }
   section:first-of-type { border-top: none; }
   .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 30px; flex-wrap: wrap; }
   h2.section-title {
@@ -236,13 +236,19 @@
     border: 1px solid var(--rule-strong); color: var(--ink);
   }
 
-  /* ---------- footer ---------- */
-  footer { padding: 44px 0 60px; }
-  .footer-row { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
-  .footer-note { font-size: 14px; color: var(--ink-faint); max-width: 46ch; }
-  .footer-links { display: flex; gap: 18px; font-family: var(--mono); font-size: 13px; }
-  .footer-links a { text-decoration: none; color: var(--ink-muted); }
-  .footer-links a:hover { color: var(--accent); }
+  /* ---------- contact ---------- */
+  .copy-email { display: inline-flex; align-items: center; gap: 8px; }
+  #copy-email-btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+    background: none; border: 1px solid var(--rule-strong); color: var(--ink-muted);
+    border-radius: 3px; padding: 2px 8px; cursor: pointer;
+  }
+  #copy-email-btn:hover { color: var(--accent); border-color: var(--accent); }
+  #copy-email-btn.copied { color: var(--accent-strong); border-color: var(--accent-strong); }
+
+  /* ---------- closing footer ---------- */
+  footer.closing { padding: 24px 0 48px; border-top: 1px solid var(--rule); }
+  footer.closing .footer-note { font-size: 13px; color: var(--ink-faint); }
 </style>
 </head>
 <body>
@@ -465,17 +471,25 @@
     </div>
   </section>
 
-  <footer class="wrap" id="contact">
-    <div class="footer-row">
-      <p class="footer-note">Open to SOC analyst and GRC / risk-compliance roles. Reach out any time.</p>
-      <div class="footer-links">
-        <a href="mailto:zachvessey16@gmail.com">Email</a>
-        <a href="https://www.linkedin.com/in/zachary-vessey-834a97223" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/zachvessey16" target="_blank" rel="noopener">GitHub</a>
-      </div>
+  <section class="wrap" id="contact">
+    <div class="section-head">
+      <h2 class="section-title">Contact</h2>
     </div>
-  </footer>
+    <p class="bio" style="margin-bottom: 22px;">Open to SOC analyst and GRC / risk-compliance roles. Reach out any time.</p>
+    <div class="contact-rail">
+      <span class="copy-email">
+        <a href="mailto:zachvessey16@gmail.com">zachvessey16@gmail.com</a>
+        <button type="button" id="copy-email-btn" aria-label="Copy email address">Copy</button>
+      </span>
+      <a href="https://www.linkedin.com/in/zachary-vessey-834a97223" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/zachvessey16" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </section>
 </main>
+
+<footer class="closing wrap">
+  <p class="footer-note">&copy; 2026 Zachary Vessey.</p>
+</footer>
 
 <script>
   (function () {
@@ -489,6 +503,22 @@
       var next = current === 'dark' ? 'light' : 'dark';
       root.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
+    });
+  })();
+
+  (function () {
+    var btn = document.getElementById('copy-email-btn');
+    var email = 'zachvessey16@gmail.com';
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      navigator.clipboard.writeText(email).then(function () {
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1500);
+      });
     });
   })();
 </script>
