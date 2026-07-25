@@ -337,15 +337,36 @@
     <p class="log-intro wrap" style="padding:0; max-width:66ch;">
       Since mid-July 2026 I've been working unanswered support threads on two real security tools,
       Wazuh (SIEM) and Velociraptor (DFIR), the same way I'd triage a ticket: read the source, reproduce
-      the reasoning, don't guess. Every entry below links to the live, public discussion.
+      the reasoning, don't guess. Every claim gets independently re-checked against the actual source
+      before it goes out. Every entry below links to the live, public discussion.
     </p>
     <div class="log-stats">
-      <div><b>8</b>threads engaged</div>
+      <div><b>10</b>threads engaged</div>
       <div><b>2</b>projects: Wazuh, Velociraptor</div>
-      <div><b>6/8</b>diagnosed from scratch</div>
+      <div><b>8/10</b>diagnosed from scratch</div>
     </div>
 
     <div class="log">
+      <div class="log-row">
+        <div class="log-date">2026-07-24</div>
+        <span class="log-tag">Wazuh</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/wazuh/wazuh/discussions/34981#discussioncomment-17773378" target="_blank" rel="noopener">Dashboard dev build failing with 404s and dependency conflicts</a>
+          <p class="log-desc">Traced it to following the platform repo's generic contributor guide instead of the plugin repo's own Docker dev environment. Confirmed the fix works on every release tag the OP had actually tried.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-date">2026-07-24</div>
+        <span class="log-tag">Wazuh</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/wazuh/wazuh/discussions/33746#discussioncomment-17773332" target="_blank" rel="noopener">Why Threat Intelligence and Correlation Rules are being removed</a>
+          <p class="log-desc">Neither issue the OP linked stated a reason, so traced the real answer through five linked GitHub tickets, and separated what's genuinely removed from what's only hidden from the nav.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+
       <div class="log-row">
         <div class="log-date">2026-07-20</div>
         <span class="log-tag">Wazuh</span>
@@ -392,6 +413,36 @@
         <div class="log-body">
           <a class="log-title" href="https://github.com/Velocidex/velociraptor/discussions/3044#discussioncomment-17677638" target="_blank" rel="noopener">Re-running hunts that failed or timed out</a>
           <p class="log-desc">Surfaced an under-documented official method (GUI and VQL) for re-collecting from clients a hunt missed, and added the VQL snippet.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-date">2026-07-18</div>
+        <span class="log-tag">Wazuh</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/wazuh/wazuh/discussions/33262#discussioncomment-17677550" target="_blank" rel="noopener">ISM policy not applying after datastream rollover</a>
+          <p class="log-desc">Rooted the fix in an OpenSearch indexing behavior most people don't expect, rather than a Wazuh bug, and matched the pattern to how Wazuh's own indices are meant to be configured.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-date">2026-07-17</div>
+        <span class="log-tag">Wazuh</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/wazuh/wazuh/discussions/35231#discussioncomment-17677434" target="_blank" rel="noopener">Detection engineering with Sigma + Wazuh</a>
+          <p class="log-desc">Answered 4 of 9 questions on a five-month-stalled thread with sourced research, and was upfront about which parts genuinely don't have an answer yet.</p>
+        </div>
+        <div class="log-status">awaiting response</div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-date">2026-07-17</div>
+        <span class="log-tag">Velociraptor</span>
+        <div class="log-body">
+          <a class="log-title" href="https://github.com/Velocidex/velociraptor/discussions/4058#discussioncomment-17677272" target="_blank" rel="noopener">Memory acquisition artifact failing silently</a>
+          <p class="log-desc">Root-caused a kernel driver failure to a space in the install path, then linked the upstream fix to a two-year-old unanswered thread.</p>
         </div>
         <div class="log-status">awaiting response</div>
       </div>
