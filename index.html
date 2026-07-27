@@ -122,9 +122,13 @@
   #theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
 
   /* ---------- hero ---------- */
-  .hero { padding: 72px 0 56px; animation: rise 0.5s ease-out; }
+  .hero { position: relative; padding: 72px 0 56px; animation: rise 0.5s ease-out; overflow: hidden; }
   @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   @media (prefers-reduced-motion: reduce) { .hero { animation: none; } }
+
+  .constellation-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  @media (prefers-reduced-motion: reduce) { .constellation-canvas { display: none; } }
+  .hero-content { position: relative; z-index: 1; }
 
   .eyebrow {
     font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
@@ -271,20 +275,23 @@
 
 <main>
   <section class="hero wrap">
-    <p class="eyebrow">SOC / GRC track</p>
-    <h1 class="name">Zachary Vessey</h1>
-    <p class="tagline">Security operations &amp; risk, learned by doing the work, not just studying it.</p>
-    <p class="bio">
-      I'm working toward a career in security operations and GRC, finishing an M.S. in Cyber Risk
-      Management at Georgetown right now. Most of what's below isn't a class project: it's SIEM labs,
-      packet captures, and real GitHub issues on tools like Wazuh and Velociraptor that I sat with
-      until I actually understood what was going wrong.
-    </p>
-    <div class="contact-rail">
-      <a href="mailto:zachvessey16@gmail.com">zachvessey16@gmail.com</a>
-      <a href="https://www.linkedin.com/in/zachary-vessey-834a97223" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/zachvessey16" target="_blank" rel="noopener">GitHub</a>
-      <span class="loc">San Francisco, CA</span>
+    <canvas id="constellation" class="constellation-canvas" aria-hidden="true"></canvas>
+    <div class="hero-content">
+      <p class="eyebrow">SOC / GRC track</p>
+      <h1 class="name">Zachary Vessey</h1>
+      <p class="tagline">Security operations &amp; risk, learned by doing the work, not just studying it.</p>
+      <p class="bio">
+        I'm working toward a career in security operations and GRC, finishing an M.S. in Cyber Risk
+        Management at Georgetown right now. Everything below is real work, not coursework, SIEM labs,
+        packet captures, and open GitHub issues on tools like Wazuh and Velociraptor that I dug into
+        myself.
+      </p>
+      <div class="contact-rail">
+        <a href="mailto:zachvessey16@gmail.com">zachvessey16@gmail.com</a>
+        <a href="https://www.linkedin.com/in/zachary-vessey-834a97223" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/zachvessey16" target="_blank" rel="noopener">GitHub</a>
+        <span class="loc">San Francisco, CA</span>
+      </div>
     </div>
   </section>
 
@@ -571,6 +578,94 @@
         }, 1500);
       });
     });
+  })();
+
+  (function () {
+    var canvas = document.getElementById('constellation');
+    if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ctx = canvas.getContext('2d');
+    var hero = canvas.parentElement;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var DOT_COUNT = 34;
+    var LINK_DIST = 100;
+    var dots = [];
+
+    function accent() {
+      return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#256478';
+    }
+
+    function resize() {
+      var w = hero.clientWidth, h = hero.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function seed() {
+      var w = hero.clientWidth, h = hero.clientHeight;
+      dots = [];
+      for (var i = 0; i < DOT_COUNT; i++) {
+        dots.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.12,
+          vy: (Math.random() - 0.5) * 0.12,
+          r: Math.random() * 1.2 + 0.6
+        });
+      }
+    }
+
+    function tick() {
+      var w = hero.clientWidth, h = hero.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+      var color = accent();
+
+      for (var i = 0; i < dots.length; i++) {
+        var d = dots[i];
+        d.x += d.vx;
+        d.y += d.vy;
+        if (d.x < 0 || d.x > w) d.vx *= -1;
+        if (d.y < 0 || d.y > h) d.vy *= -1;
+        d.x = Math.max(0, Math.min(w, d.x));
+        d.y = Math.max(0, Math.min(h, d.y));
+      }
+
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = color;
+      for (var i = 0; i < dots.length; i++) {
+        for (var j = i + 1; j < dots.length; j++) {
+          var a = dots[i], b = dots[j];
+          var dx = a.x - b.x, dy = a.y - b.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < LINK_DIST) {
+            ctx.globalAlpha = (1 - dist / LINK_DIST) * 0.35;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = color;
+      for (var i = 0; i < dots.length; i++) {
+        var d = dots[i];
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      requestAnimationFrame(tick);
+    }
+
+    resize();
+    seed();
+    requestAnimationFrame(tick);
+    window.addEventListener('resize', resize);
   })();
 </script>
 
