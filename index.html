@@ -462,6 +462,12 @@
     </div>
     <div class="grid-2">
       <div class="card">
+        <div class="card-meta">Detection Engineering &middot; Self-Directed &middot; Sigma, Splunk, Elastic</div>
+        <h3><a href="https://github.com/zachvessey16/ssh-bruteforce-detection" target="_blank" rel="noopener">SSH brute force detection (MITRE T1110.001)</a></h3>
+        <p>Simulated a password-guessing attack against a local sshd instance, captured the real auth logs it produced, and wrote a Sigma correlation rule from scratch to flag 5+ failed logins from one source within a 2-minute window. Validated with sigma-cli and cross-converted to Splunk SPL and Elastic ES|QL.</p>
+      </div>
+
+      <div class="card">
         <div class="card-meta">Detection Engineering &middot; SigmaHQ &middot; open PR</div>
         <h3><a href="https://github.com/SigmaHQ/sigma/pull/6145" target="_blank" rel="noopener">Sigma rules for CISA/NSA/FBI advisory AA26-194A</a></h3>
         <p>Wrote two Sigma detection rules for the router-config-theft technique in advisory AA26-194A (weak-community-string SNMP abuse and outbound TFTP exfiltration from management subnets), validated for syntax and cross-converted to Splunk and Elastic.</p>
